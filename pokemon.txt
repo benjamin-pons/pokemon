@@ -1,0 +1,51 @@
+maractus = plante
+solrock = psy,roche
+
+mesprit = psy
+
+absol = tenebre
+
+lapras = eau,glace
+
+mewtwo = psy
+
+
+evolution:
+
+-Teddiursa = normal
+	Ursaring
+
+grimer = poison
+	muk
+
+turtwig = plante
+	grotle
+	torterra = plante,terre
+
+tepig = feu
+	pignite
+	emboar = feu, combat
+
+totodile = eau
+	croconaw
+	feraligatr
+
+gastly = spectre,poison
+	haunter 
+	gengar
+
+elekid = electrique
+	electabuzz
+
+pinecco = insecte
+	forrestress = acier,insecte
+
+dragonite = dragon,vol
+	datini
+	dragonair
+
+
+
+
+
+
