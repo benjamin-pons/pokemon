@@ -77,6 +77,7 @@ while running:
                     current_screen = "menu"
 
     if current_screen == "menu":
+        print("bonjour")
         if not pygame.mixer.music.get_busy():
             pygame.mixer.music.load(r"./sound/sound_theme.mp3")
             pygame.mixer.music.play(-1)
