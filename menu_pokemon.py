@@ -10,6 +10,17 @@ pygame.display.set_caption("Pokemon")
 background_image = pygame.image.load(r"./images/background/background_display_menu.png")
 background_image = pygame.transform.scale(background_image, (1100, 800))
 
+background_pokedex = pygame.image.load(r"./images/background/background_pokedex.jpg")
+background_pokedex = pygame.transform.scale(background_pokedex, (1100, 800))
+
+background_game = pygame.image.load(r"./images/background/background_game.jpg")
+background_game = pygame.transform.scale(background_game, (1100, 800))
+
+# Play music
+pygame.mixer.init()
+pygame.mixer.music.load(r"./sound/sound_theme.mp3")
+pygame.mixer.music.play(-1)  # Loops music
+
 # Buttons
 button_play = pygame.image.load(r"./images/buttons/play_button.png")
 button_play = pygame.transform.scale(button_play, (800, 400))
@@ -21,7 +32,12 @@ rect_button_quit = button_quit.get_rect(topleft=(160, 400))
 
 button_pokedex = pygame.image.load(r"./images/buttons/button_pokedex.png")
 button_pokedex = pygame.transform.scale(button_pokedex, (800, 400))
-rect_button_pokedex = button_pokedex.get_rect(topleft=(400, 100))  # Correction ici
+rect_button_pokedex = button_pokedex.get_rect(topleft=(400, 100))  
+
+button_back = pygame.image.load(r"./images/buttons/button_back.png")
+button_back = pygame.transform.scale(button_back, (80, 80))
+rect_button_back = button_back.get_rect(topleft=(100, 60))  
+
 
 def display_main_menu():
     screen.blit(background_image, (0, 0))
@@ -31,7 +47,13 @@ def display_main_menu():
     pygame.display.update()
 
 def display_pokedex():
-    screen.fill((160, 206, 50))
+    screen.blit(background_pokedex,(0,0))
+    screen.blit(button_back,rect_button_back)
+    pygame.display.update()
+
+def display_game():
+    screen.blit(background_game,(0,0))
+    screen.blit(button_back,rect_button_back)
     pygame.display.update()
 
 current_screen = "menu"
@@ -50,12 +72,19 @@ while running:
                     current_screen = "pokedex"
                 if rect_button_quit.collidepoint(event.pos):
                     running = False
+            elif current_screen in ["game", "pokedex"]:
+                if rect_button_back.collidepoint(event.pos):
+                    current_screen = "menu"
 
     if current_screen == "menu":
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.load(r"./sound/sound_theme.mp3")
+            pygame.mixer.music.play(-1)
         display_main_menu()
     elif current_screen == "pokedex":
         display_pokedex()
     elif current_screen == "game":
-        pygame.display.update()
+        pygame.mixer.music.stop()
+        display_game()
 
 pygame.quit()
