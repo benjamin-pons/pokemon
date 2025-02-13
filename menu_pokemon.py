@@ -41,6 +41,14 @@ button_back = pygame.image.load(r"./assets/images/buttons/button_back.png")
 button_back = pygame.transform.scale(button_back, (80, 80))
 rect_button_back = button_back.get_rect(topleft=(100, 60))  
 
+button_attack = pygame.image.load(r"./assets/images/buttons/button_attack.png")
+button_attack = pygame.transform.scale(button_attack, (200, 200))
+rect_button_attack = button_attack.get_rect(topleft=(890, 600))
+
+button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
+button_run = pygame.transform.scale(button_run, (200, 200))
+rect_button_run = button_run.get_rect(topleft=(720, 600))
+
 
 def display_main_menu():
     screen.blit(background_image, (0, 0))
@@ -50,6 +58,7 @@ def display_main_menu():
     screen.blit(button_pokedex, rect_button_pokedex.topleft)
     pygame.display.update()
 
+
 def display_pokedex():
     screen.blit(background_pokedex,(0,0))
     screen.blit(button_back,rect_button_back)
@@ -58,6 +67,8 @@ def display_pokedex():
 def display_game():
     screen.blit(background_game,(0,0))
     screen.blit(button_back,rect_button_back)
+    screen.blit(button_run,rect_button_run)
+    screen.blit(button_attack,rect_button_attack)
     pygame.display.update()
 
 current_screen = "menu"
