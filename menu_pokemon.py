@@ -16,6 +16,9 @@ background_pokedex = pygame.transform.scale(background_pokedex, (1100, 800))
 background_game = pygame.image.load(r"./images/background/background_game.jpg")
 background_game = pygame.transform.scale(background_game, (1100, 800))
 
+logo = pygame.image.load(r"./images/logo.png")
+logo = pygame.transform.scale(logo, (400, 150))
+
 # Play music
 pygame.mixer.init()
 pygame.mixer.music.load(r"./sound/sound_theme.mp3")
@@ -41,6 +44,7 @@ rect_button_back = button_back.get_rect(topleft=(100, 60))
 
 def display_main_menu():
     screen.blit(background_image, (0, 0))
+    screen.blit(logo,(350,80))
     screen.blit(button_play, rect_button_play.topleft)
     screen.blit(button_quit, rect_button_quit.topleft)
     screen.blit(button_pokedex, rect_button_pokedex.topleft)
@@ -77,7 +81,6 @@ while running:
                     current_screen = "menu"
 
     if current_screen == "menu":
-        print("bonjour")
         if not pygame.mixer.music.get_busy():
             pygame.mixer.music.load(r"./sound/sound_theme.mp3")
             pygame.mixer.music.play(-1)
