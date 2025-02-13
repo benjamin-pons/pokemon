@@ -90,5 +90,5 @@ while running:
     elif current_screen == "game":
         pygame.mixer.music.stop()
         display_game()
-
+print("ok")
 pygame.quit()
