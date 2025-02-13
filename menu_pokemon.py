@@ -7,37 +7,37 @@ SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pokemon")
 
-background_image = pygame.image.load(r"./images/background/background_display_menu.png")
+background_image = pygame.image.load(r"./assets/images/background/background_display_menu.png")
 background_image = pygame.transform.scale(background_image, (1100, 800))
 
-background_pokedex = pygame.image.load(r"./images/background/background_pokedex.jpg")
+background_pokedex = pygame.image.load(r"./assets/images/background/background_pokedex.jpg")
 background_pokedex = pygame.transform.scale(background_pokedex, (1100, 800))
 
-background_game = pygame.image.load(r"./images/background/background_game.jpg")
+background_game = pygame.image.load(r"./assets/images/background/background_game.jpg")
 background_game = pygame.transform.scale(background_game, (1100, 800))
 
-logo = pygame.image.load(r"./images/logo.png")
+logo = pygame.image.load(r"./assets/images/logo.png")
 logo = pygame.transform.scale(logo, (400, 150))
 
 # Play music
 pygame.mixer.init()
-pygame.mixer.music.load(r"./sound/sound_theme.mp3")
+pygame.mixer.music.load(r"./assets/sound/sound_theme.mp3")
 pygame.mixer.music.play(-1)  # Loops music
 
 # Buttons
-button_play = pygame.image.load(r"./images/buttons/play_button.png")
+button_play = pygame.image.load(r"./assets/images/buttons/play_button.png")
 button_play = pygame.transform.scale(button_play, (800, 400))
 rect_button_play = button_play.get_rect(topleft=(-80, 100))
 
-button_quit = pygame.image.load(r"./images/buttons/button_quit.png")
+button_quit = pygame.image.load(r"./assets/images/buttons/button_quit.png")
 button_quit = pygame.transform.scale(button_quit, (800, 400))
 rect_button_quit = button_quit.get_rect(topleft=(160, 400))
 
-button_pokedex = pygame.image.load(r"./images/buttons/button_pokedex.png")
+button_pokedex = pygame.image.load(r"./assets/images/buttons/button_pokedex.png")
 button_pokedex = pygame.transform.scale(button_pokedex, (800, 400))
 rect_button_pokedex = button_pokedex.get_rect(topleft=(400, 100))  
 
-button_back = pygame.image.load(r"./images/buttons/button_back.png")
+button_back = pygame.image.load(r"./assets/images/buttons/button_back.png")
 button_back = pygame.transform.scale(button_back, (80, 80))
 rect_button_back = button_back.get_rect(topleft=(100, 60))  
 
@@ -82,7 +82,7 @@ while running:
 
     if current_screen == "menu":
         if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.load(r"./sound/sound_theme.mp3")
+            pygame.mixer.music.load(r"./assets/sound/sound_theme.mp3")
             pygame.mixer.music.play(-1)
         display_main_menu()
     elif current_screen == "pokedex":
