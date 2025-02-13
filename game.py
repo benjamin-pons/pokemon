@@ -6,7 +6,7 @@ with open("pokemonList.json", "r") as json_file :
     pokemonList = json.load(json_file)
 
 # Input pokedex index to load corresponding pokemon
-def newPokemon(number) :
+def loadPokemon(number) :
     """Create a pokemon from json file"""
     name = pokemonList[number]["name"]
     base_hp = pokemonList[number]["hp"]
@@ -20,6 +20,7 @@ def newPokemon(number) :
 # Create a random pokemon
 number = random.randint(1, 61)
 
-pokemon1 = newPokemon(number)
-pokemon2 = newPokemon()
+pokemon1 = loadPokemon(number)
+pokemon2 = loadPokemon(50)
 pokemon1.print_info()
+pokemon2.print_info()
