@@ -4,6 +4,8 @@ import json
 import random
 import time
 
+pygame.init()
+
 # Load pokemon list file
 with open("pokemonList.json", "r") as json_file :
     pokemonList = json.load(json_file)
@@ -26,7 +28,7 @@ button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
 button_run = pygame.transform.scale(button_run, (200, 200))
 rect_button_run = button_run.get_rect(topleft=(720, 600))
 
-pokemon_name_font = pygame.font.SysFont("arial", 30)
+pokemon_name_font = pygame.font.Font(None, 30)
 
 def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
     screen.blit(background_game,(0,0))
@@ -39,8 +41,8 @@ def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
     text_name_ally = pokemon_name_font.render(ally.name, False, (255, 255, 255))
     text_name_ennemy = pokemon_name_font.render(ennemy.name, False, (255, 255, 255))
 
-    screen.blit(text_name_ally, (50, 250))
-    screen.blit(text_name_ennemy, (620, 100))
+    screen.blit(text_name_ally, (150, 450))
+    screen.blit(text_name_ennemy, (620, 200))
 
     pygame.display.update()
 
@@ -64,11 +66,11 @@ def action_attack(ally, target) :
     target.print_info()
 
 def start_battle() :
-    pokemon_ally = loadPokemon(21)
+    pokemon_ally = loadPokemon(4)
     pokemon_ally_sprite = pygame.image.load(pokemon_ally.sprite_back)
     pokemon_ally_sprite = pygame.transform.scale(pokemon_ally_sprite, (600, 600))
 
-    pokemon_ennemy = loadPokemon(15)
+    pokemon_ennemy = loadPokemon(1)
     pokemon_ennemy_sprite = pygame.image.load(pokemon_ennemy.sprite_front)
     pokemon_ennemy_sprite = pygame.transform.scale(pokemon_ennemy_sprite, (350, 350))
 
@@ -76,7 +78,7 @@ def start_battle() :
     while battle :
         for event in pygame.event.get() :
             if event.type == pygame.QUIT:
-                running = False
+                battle = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if rect_button_attack.collidepoint(event.pos) :
                     action_attack(pokemon_ally, pokemon_ennemy)
