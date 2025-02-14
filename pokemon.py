@@ -7,7 +7,7 @@ class Pokemon :
         self.type2 = type2
         self.lvl = lvl
         self.max_hp = (2*base_hp*self.lvl)//100 + self.lvl + 10
-        self.hp = self.max_hp
+        self.__hp = self.max_hp
         self.sprite_front = f"./images/sprite/{self.name}-face.png"
         self.sprite_back = f"./images/sprite/{self.name}-back.png"
         self.alive = True
@@ -15,13 +15,13 @@ class Pokemon :
     def lower_hp(self, damage) :
         """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
         if damage >= self.hp :
-            self.hp = 0
+            self.__hp = 0
             self.alive = False
         else :
             self.hp -= damage
     
     def get_hp(self) :
-        return self.hp
+        return self.__hp
     
     def get_type(self) :
         return self.type1, self.type2
@@ -135,17 +135,3 @@ type_matchups = {
                   "Fighting": 1, "Poison": 1, "Ground": 1, "Flying": 1, "Psychic": 1, "Bug": 1,
                   "Rock": 1, "Ghost": 1, "Dragon": 1, "Dark": 1, "Steel": 1, "Fairy": 1}
     }
-
-# pokemon1 = Pokemon("absol", 65, 130, 60, 50, "Dark")
-# pokemon2 = Pokemon("leviator", 95, 125, 100, 50, "Water", "Flying")
-# pokemon3 = Pokemon("raichu", 60, 90, 80, 50, "Electric")
-
-# pokemon3.print_hp()
-# pokemon2.print_hp()
-
-# print("")
-# pokemon3.attack(pokemon2)
-# pokemon2.attack(pokemon3)
-
-# pokemon3.print_hp()
-# pokemon2.print_hp()

@@ -1,4 +1,5 @@
 import pygame
+from battle import start_battle
 
 pygame.init()
 
