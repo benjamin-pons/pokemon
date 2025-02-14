@@ -43,7 +43,6 @@ def loadPokemon(number) :
     type2 = pokemonList[number]["type2"]
     return Pokemon(name, base_hp, atk, defense, lvl, type1, type2)
 
-
 # Attack
 def action_attack(ally, target) :
     ally.attack(target)

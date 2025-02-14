@@ -24,7 +24,7 @@ class Pokemon :
         return self.__hp
     
     def get_type(self) :
-        return self.type1, self.type2
+        return (self.type1, self.type2)
     
     def get_atk(self) :
         return self.atk
@@ -32,7 +32,12 @@ class Pokemon :
     def get_def(self) :
         return self.defense
     
-    def get_effectiveness(self, target) :
+
+
+    # type = (type1, type2)
+    # type[0]
+
+    def get_effectiveness(self, target) : 
         type_atk = self.get_type()[0]
         type1_def = target.get_type()[0]
         type2_def = target.get_type()[1]

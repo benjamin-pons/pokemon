@@ -81,7 +81,6 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if current_screen == "menu":
                 if rect_button_play.collidepoint(event.pos):
-                    current_screen = "game"
                     battle.start_battle()
                     current_screen = "menu"
                 if rect_button_pokedex.collidepoint(event.pos):
@@ -101,8 +100,6 @@ while running:
         display_main_menu()
     elif current_screen == "pokedex":
         display_pokedex()
-    elif current_screen == "game":
-        pygame.mixer.music.stop()
     elif current_screen == "save":
         display_save()
 
