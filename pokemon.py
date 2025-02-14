@@ -14,11 +14,11 @@ class Pokemon :
     
     def lower_hp(self, damage) :
         """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
-        if damage >= self.hp :
+        if damage >= self.__hp :
             self.__hp = 0
             self.alive = False
         else :
-            self.hp -= damage
+            self.__hp -= damage
     
     def get_hp(self) :
         return self.__hp
@@ -45,6 +45,7 @@ class Pokemon :
         efficiency = self.get_effectiveness(target)
         damage = (base//50 + 2) * efficiency
         target.lower_hp(damage)
+        print(f"{target.name} took {damage} damage")
     
     def print_hp(self) :
         print(f"{self.name} : {self.get_hp()} HP")
@@ -55,7 +56,7 @@ class Pokemon :
             print(f"Types : {self.type1}, {self.type2}")
         else :
             print(f"Type : {self.type1}")
-        print(f"ATK : {self.atk} \nDEF : {self.defense} \nHP : {self.hp}")
+        print(f"ATK : {self.atk} \nDEF : {self.defense} \nHP : {self.__hp}")
     
 # Source : https://github.com/AbnormalNormality/Pokemon-Type-Matchups/blob/main/original%20function.py
 type_matchups = {

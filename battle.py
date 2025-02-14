@@ -44,20 +44,22 @@ def loadPokemon(number) :
     return Pokemon(name, base_hp, atk, defense, lvl, type1, type2)
 
 
-#Attack
-def action_attack(target) :
-    pokemon_ally.attack(target)
+# Attack
+def action_attack(ally, target) :
+    ally.attack(target)
     time.sleep(1)
-    pokemon_ennemy.print_info()
+    target.print_info()
 
 def start_battle() :
+    pokemon_ally = loadPokemon(1)
+    pokemon_ennemy = loadPokemon(4)
 
     battle = True
     while battle :
         for event in pygame.event.get() :
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if rect_button_attack.collidepoint(event.pos) :
-                    action_attack(pokemon_ennemy)
+                    action_attack(pokemon_ally, pokemon_ennemy)
                 elif rect_button_run.collidepoint(event.pos) :
                     battle = False
         
