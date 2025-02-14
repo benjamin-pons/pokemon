@@ -8,8 +8,8 @@ class Pokemon :
         self.lvl = lvl
         self.max_hp = (2*base_hp*self.lvl)//100 + self.lvl + 10
         self.__hp = self.max_hp
-        self.sprite_front = f"./images/sprite/{self.name}-face.png"
-        self.sprite_back = f"./images/sprite/{self.name}-back.png"
+        self.sprite_front = f"./assets/images/sprites/front/{self.name.lower()}_front.png"
+        self.sprite_back = f"./assets/images/sprites/back/{self.name.lower()}_back.png"
         self.alive = True
     
     def lower_hp(self, damage) :
@@ -31,11 +31,6 @@ class Pokemon :
     
     def get_def(self) :
         return self.defense
-    
-
-
-    # type = (type1, type2)
-    # type[0]
 
     def get_effectiveness(self, target) : 
         type_atk = self.get_type()[0]
@@ -62,6 +57,7 @@ class Pokemon :
         else :
             print(f"Type : {self.type1}")
         print(f"ATK : {self.atk} \nDEF : {self.defense} \nHP : {self.__hp}")
+
     
 # Source : https://github.com/AbnormalNormality/Pokemon-Type-Matchups/blob/main/original%20function.py
 type_matchups = {

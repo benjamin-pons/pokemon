@@ -48,8 +48,7 @@ rect_button_save = button_save.get_rect(topleft=(-80, 400))
 
 button_back = pygame.image.load(r"./assets/images/buttons/button_back.png")
 button_back = pygame.transform.scale(button_back, (80, 80))
-rect_button_back = button_back.get_rect(topleft=(100, 60))  
-
+rect_button_back = button_back.get_rect(topleft=(100, 60))
 
 def display_main_menu():
     screen.blit(background_image, (0, 0))
