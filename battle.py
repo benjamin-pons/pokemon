@@ -8,6 +8,7 @@ import time
 with open("pokemonList.json", "r") as json_file :
     pokemonList = json.load(json_file)
 
+
 SCREEN_WIDTH = 1100
 SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -25,7 +26,9 @@ button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
 button_run = pygame.transform.scale(button_run, (200, 200))
 rect_button_run = button_run.get_rect(topleft=(720, 600))
 
-def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite):
+pokemon_name_font = pygame.font.SysFont("arial", 30)
+
+def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
     screen.blit(background_game,(0,0))
     screen.blit(button_run,rect_button_run)
     screen.blit(button_attack,rect_button_attack)
@@ -33,6 +36,11 @@ def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite):
     screen.blit(pokemon_ally_sprite, (-15, 350))
     screen.blit(pokemon_ennemy_sprite,(620, 200))
 
+    text_name_ally = pokemon_name_font.render(ally.name, False, (255, 255, 255))
+    text_name_ennemy = pokemon_name_font.render(ennemy.name, False, (255, 255, 255))
+
+    screen.blit(text_name_ally, (50, 250))
+    screen.blit(text_name_ennemy, (620, 100))
 
     pygame.display.update()
 
@@ -56,11 +64,11 @@ def action_attack(ally, target) :
     target.print_info()
 
 def start_battle() :
-    pokemon_ally = loadPokemon(30)
+    pokemon_ally = loadPokemon(21)
     pokemon_ally_sprite = pygame.image.load(pokemon_ally.sprite_back)
     pokemon_ally_sprite = pygame.transform.scale(pokemon_ally_sprite, (600, 600))
 
-    pokemon_ennemy = loadPokemon(40)
+    pokemon_ennemy = loadPokemon(15)
     pokemon_ennemy_sprite = pygame.image.load(pokemon_ennemy.sprite_front)
     pokemon_ennemy_sprite = pygame.transform.scale(pokemon_ennemy_sprite, (350, 350))
 
@@ -75,4 +83,4 @@ def start_battle() :
                 elif rect_button_run.collidepoint(event.pos) :
                     battle = False
         
-        display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite)
+        display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, pokemon_ally, pokemon_ennemy)
