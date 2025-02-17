@@ -21,12 +21,12 @@ background_game = pygame.transform.scale(background_game, (1100, 800))
 
 # In combat UI
 button_attack = pygame.image.load(r"./assets/images/buttons/button_attack.png")
-button_attack = pygame.transform.scale(button_attack, (200, 200))
+button_attack = pygame.transform.scale(button_attack, (175, 100))
 rect_button_attack = button_attack.get_rect(topleft=(890, 600))
 
 button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
-button_run = pygame.transform.scale(button_run, (200, 200))
-rect_button_run = button_run.get_rect(topleft=(720, 600))
+button_run = pygame.transform.scale(button_run, (150, 100))
+rect_button_run = button_run.get_rect(topleft=(650, 600))
 
 pokemon_name_font = pygame.font.Font(None, 30)
 

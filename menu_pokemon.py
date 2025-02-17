@@ -30,21 +30,23 @@ pygame.mixer.music.load(r"./assets/sound/sound_theme.mp3")
 pygame.mixer.music.play(-1)  # Loops music
 
 # Buttons
-button_play = pygame.image.load(r"./assets/images/buttons/play_button.png")
-button_play = pygame.transform.scale(button_play, (800, 400))
-rect_button_play = button_play.get_rect(topleft=(-80, 100))
+BUTTON_SIZE = (250, 100)
 
-button_quit = pygame.image.load(r"./assets/images/buttons/button_quit.png")
-button_quit = pygame.transform.scale(button_quit, (800, 400))
-rect_button_quit = button_quit.get_rect(topleft=(400, 400))
+button_play = pygame.image.load(r"./assets/images/buttons/play_button.png")
+button_play = pygame.transform.scale(button_play, BUTTON_SIZE)
+rect_button_play = button_play.get_rect(topleft=(200, 300))
 
 button_pokedex = pygame.image.load(r"./assets/images/buttons/button_pokedex.png")
-button_pokedex = pygame.transform.scale(button_pokedex, (800, 400))
-rect_button_pokedex = button_pokedex.get_rect(topleft=(400, 100))  
+button_pokedex = pygame.transform.scale(button_pokedex, BUTTON_SIZE)
+rect_button_pokedex = button_pokedex.get_rect(topleft=(700, 300))
 
 button_save = pygame.image.load(r"./assets/images/buttons/save_button.png")
-button_save = pygame.transform.scale(button_save, (800, 400))
-rect_button_save = button_save.get_rect(topleft=(-80, 400))
+button_save = pygame.transform.scale(button_save, BUTTON_SIZE)
+rect_button_save = button_save.get_rect(topleft=(200, 600))
+
+button_quit = pygame.image.load(r"./assets/images/buttons/button_quit.png")
+button_quit = pygame.transform.scale(button_quit, BUTTON_SIZE)
+rect_button_quit = button_quit.get_rect(topleft=(700, 600))
 
 button_back = pygame.image.load(r"./assets/images/buttons/button_back.png")
 button_back = pygame.transform.scale(button_back, (80, 80))
