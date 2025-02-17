@@ -1,6 +1,6 @@
 import pygame
-from battle import start_battle
 import battle
+from battle import Battle
 
 pygame.init()
 
@@ -86,6 +86,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if current_screen == "menu":
                 if rect_button_play.collidepoint(event.pos):
+                    battle = Battle()
                     battle.start_battle()
                     current_screen = "menu"
                 if rect_button_pokedex.collidepoint(event.pos):

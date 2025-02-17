@@ -5,118 +5,125 @@ import random
 import time
 from healthbar import HealthBar
 
-pygame.init()
+class Battle:
+    def __init__(self):
+        pygame.init()
 
-# Load pokemon list file
-with open("pokemonList.json", "r") as json_file :
-    pokemonList = json.load(json_file)
+        # Load pokemon list file
+        with open("pokemonList.json", "r") as json_file:
+            self.pokemonList = json.load(json_file)
 
+        SCREEN_WIDTH = 1100
+        SCREEN_HEIGHT = 800
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (10, 10, 10)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_caption("Pokemon")
 
-SCREEN_WIDTH = 1100
-SCREEN_HEIGHT = 800
-WHITE = (255, 255, 255)
-BLACK = (10, 10, 10)
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Pokemon")
+        self.background_game = pygame.image.load(r"./assets/images/background/battle_background.png")
+        self.background_game = pygame.transform.scale(self.background_game, (1100, 800))
 
-background_game = pygame.image.load(r"./assets/images/background/battle_background.png")
-background_game = pygame.transform.scale(background_game, (1100, 800))
+        # In combat UI
+        self.button_attack = pygame.image.load(r"./assets/images/buttons/button_attack.png")
+        self.button_attack = pygame.transform.scale(self.button_attack, (175, 100))
+        self.rect_button_attack = self.button_attack.get_rect(topleft=(890, 670))
 
-# In combat UI
-button_attack = pygame.image.load(r"./assets/images/buttons/button_attack.png")
-button_attack = pygame.transform.scale(button_attack, (175, 100))
-rect_button_attack = button_attack.get_rect(topleft=(890, 700))
+        self.button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
+        self.button_run = pygame.transform.scale(self.button_run, (150, 100))
+        self.rect_button_run = self.button_run.get_rect(topleft=(650, 670))
 
-button_run = pygame.image.load(r"./assets/images/buttons/button_run.png")
-button_run = pygame.transform.scale(button_run, (150, 100))
-rect_button_run = button_run.get_rect(topleft=(650, 700))
+        self.ally_bar = pygame.image.load(r"assets/images/ui/health_bar_ally_nohealth.png")
+        self.ally_bar = pygame.transform.scale(self.ally_bar, (350, 110))
 
-ally_bar = pygame.image.load(r"assets/images/ui/health_bar_ally_nohealth.png")
-ally_bar = pygame.transform.scale(ally_bar, (350, 110))
+        self.ennemy_bar = pygame.image.load(r"assets/images/ui/health_bar_ennemy_nohealth.png")
+        self.ennemy_bar = pygame.transform.scale(self.ennemy_bar, (350, 110))
 
-ennemy_bar = pygame.image.load(r"assets/images/ui/health_bar_ennemy_nohealth.png")
-ennemy_bar = pygame.transform.scale(ennemy_bar, (350, 110))
+        self.pokemon_name_font = pygame.font.Font('assets/pokemon_pixel_font.ttf', 32)
 
-pokemon_name_font = pygame.font.Font('assets/pokemon_pixel_font.ttf', 32)
+        self.health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
+        self.health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
-health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
-health_bar_ally = HealthBar(750, 610, 213, 15, 100)
+    def display_battle(self, pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
+        self.screen.blit(self.button_run, self.rect_button_run)
+        self.screen.blit(self.button_attack, self.rect_button_attack)
+        self.health_bar_ally.draw(self.screen)
+        self.health_bar_ennemy.draw(self.screen)
 
-def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
-    screen.blit(button_run,rect_button_run)
-    screen.blit(button_attack,rect_button_attack)    
+        self.screen.blit(self.pokemon_ally_sprite, (150, 300))
+        self.screen.blit(self.pokemon_ennemy_sprite, (600, 140))
+        pygame.display.update()
 
-    health_bar_ally.draw(screen)
-    health_bar_ennemy.draw(screen)
+    def display_ui(self, ally, ennemy):
+        self.screen.blit(self.background_game, (0, 0))
+        self.screen.blit(self.ally_bar, (650, 550))
+        self.screen.blit(self.ennemy_bar, (120, 100))
 
-    pygame.display.update()
-
-def display_ui(ally, ennemy) :
-    screen.blit(background_game,(0,0))
-    screen.blit(ally_bar, (650, 550))
-    screen.blit(ennemy_bar, (120, 100))
-
-    text_name_ally = pokemon_name_font.render(ally.name, False, BLACK)
-    text_lvl_ally = pokemon_name_font.render(f"LVL {ally.lvl}", False, BLACK)
-    
-    text_name_ennemy = pokemon_name_font.render(ennemy.name, False, BLACK)
-    text_lvl_ennemy = pokemon_name_font.render(f"LVL {ennemy.lvl}", False, BLACK)
-
-    screen.blit(text_name_ally, (700, 570))
-    screen.blit(text_lvl_ally, (900, 570))    
-    screen.blit(text_name_ennemy, (150, 125))
-    screen.blit(text_lvl_ennemy, (350, 125))
-
-
-# Input pokedex index to load corresponding pokemon
-def loadPokemon(number) :
-    """Create a pokemon from json file"""
-    name = pokemonList[number]["name"]
-    base_hp = pokemonList[number]["hp"]
-    atk = pokemonList[number]["attack"]
-    defense = pokemonList[number]["defense"]
-    lvl = random.randint(50, 60)
-    type1 = pokemonList[number]["type1"]
-    type2 = pokemonList[number]["type2"]
-    return Pokemon(name, base_hp, atk, defense, lvl, type1, type2)
-
-
-# Attack
-def action_attack(ally, target) :
-    target.print_info()
-    ally.attack(target)
-    health_bar_ennemy.hp = (target.get_hp()/target.max_hp)*100
-
-    time.sleep(1)
-    target.print_info()
-
-
-def start_battle() :
-    pokemon_ally = loadPokemon(33)
-    pokemon_ally_sprite = pygame.image.load(pokemon_ally.sprite_back)
-    pokemon_ally_sprite = pygame.transform.scale(pokemon_ally_sprite, (400, 400))
-
-    pokemon_ennemy = loadPokemon(52)
-    pokemon_ennemy_sprite = pygame.image.load(pokemon_ennemy.sprite_front)
-    pokemon_ennemy_sprite = pygame.transform.scale(pokemon_ennemy_sprite, (350, 350))
-
-    display_ui(pokemon_ally, pokemon_ennemy)
-
-    screen.blit(pokemon_ally_sprite, (150, 300))
-    screen.blit(pokemon_ennemy_sprite,(600, 140))
-    
-    health_bar_ally.hp = 100
-    health_bar_ennemy.hp = 100
-
-    battle = True
-    while battle :
-        for event in pygame.event.get() :
-            if event.type == pygame.QUIT:
-                battle = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if rect_button_attack.collidepoint(event.pos) :
-                    action_attack(pokemon_ally, pokemon_ennemy)
-                elif rect_button_run.collidepoint(event.pos) :
-                    battle = False
+        text_name_ally = self.pokemon_name_font.render(ally.name, False, self.BLACK)
+        text_lvl_ally = self.pokemon_name_font.render(f"LVL {ally.lvl}", False, self.BLACK)
         
-        display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, pokemon_ally, pokemon_ennemy)
+        text_name_ennemy = self.pokemon_name_font.render(ennemy.name, False, self.BLACK)
+        text_lvl_ennemy = self.pokemon_name_font.render(f"LVL {ennemy.lvl}", False, self.BLACK)
+
+        self.screen.blit(text_name_ally, (700, 570))
+        self.screen.blit(text_lvl_ally, (900, 570))    
+        self.screen.blit(text_name_ennemy, (150, 125))
+        self.screen.blit(text_lvl_ennemy, (350, 125))
+
+    # Input pokedex index to load corresponding pokemon
+    def loadPokemon(self, number):
+        """Create a pokemon from json file"""
+        name = self.pokemonList[number]["name"]
+        base_hp = self.pokemonList[number]["hp"]
+        atk = self.pokemonList[number]["attack"]
+        defense = self.pokemonList[number]["defense"]
+        lvl = random.randint(50, 60)
+        type1 = self.pokemonList[number]["type1"]
+        type2 = self.pokemonList[number]["type2"]
+        return Pokemon(name, base_hp, atk, defense, lvl, type1, type2)
+
+    # Attack
+    def action_attack(self, ally, target):
+        target.print_info()
+        ally.attack(target)
+        self.health_bar_ennemy.hp = (target.get_hp() / target.max_hp) * 100
+        time.sleep(1)
+        target.print_info()
+        self.display_ui(ally, target)
+        self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
+
+    def start_battle(self):
+        self.pokemon_ally = self.loadPokemon(33)
+        self.pokemon_ally_sprite = pygame.image.load(self.pokemon_ally.sprite_back)
+        self.pokemon_ally_sprite = pygame.transform.scale(self.pokemon_ally_sprite, (400, 400))
+
+        self.pokemon_ennemy = self.loadPokemon(52)
+        self.pokemon_ennemy_sprite = pygame.image.load(self.pokemon_ennemy.sprite_front)
+        self.pokemon_ennemy_sprite = pygame.transform.scale(self.pokemon_ennemy_sprite, (350, 350))
+
+        self.display_ui(self.pokemon_ally, self.pokemon_ennemy)
+
+        self.screen.blit(self.pokemon_ally_sprite, (150, 300))
+        self.screen.blit(self.pokemon_ennemy_sprite, (600, 140))
+
+        self.health_bar_ally.hp = 100
+        self.health_bar_ennemy.hp = 100
+
+        battle = True
+        while battle:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    battle = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.rect_button_attack.collidepoint(event.pos):
+                        self.action_attack(self.pokemon_ally, self.pokemon_ennemy)
+                    elif self.rect_button_run.collidepoint(event.pos):
+                        battle = False
+
+            self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, self.pokemon_ally, self.pokemon_ennemy)
+
+
+
+# For testing combat
+if __name__ == "__main__":
+    battle = Battle()
+    battle.start_battle()
