@@ -3,7 +3,7 @@ from pokemon import Pokemon
 import json
 import random
 import time
-import healthbar
+from healthbar import HealthBar
 
 pygame.init()
 
@@ -19,7 +19,7 @@ BLACK = (10, 10, 10)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pokemon")
 
-background_game = pygame.image.load(r"./assets/images/background/background_game.jpg")
+background_game = pygame.image.load(r"./assets/images/background/battle_background.png")
 background_game = pygame.transform.scale(background_game, (1100, 800))
 
 # In combat UI
@@ -39,14 +39,15 @@ ennemy_bar = pygame.transform.scale(ennemy_bar, (350, 110))
 
 pokemon_name_font = pygame.font.Font('assets/pokemon_pixel_font.ttf', 32)
 
-# health_bar = HealthBar(250, 200, 300, 40, 100)
+health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
+health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
 def display_battle(pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
     screen.blit(button_run,rect_button_run)
     screen.blit(button_attack,rect_button_attack)    
 
-    # health_bar.hp = 50
-    # health_bar.draw(screen)
+    health_bar_ally.draw(screen)
+    health_bar_ennemy.draw(screen)
 
     pygame.display.update()
 
@@ -82,24 +83,31 @@ def loadPokemon(number) :
 
 # Attack
 def action_attack(ally, target) :
+    target.print_info()
     ally.attack(target)
+    health_bar_ennemy.hp = (target.get_hp()/target.max_hp)*100
+
     time.sleep(1)
     target.print_info()
 
-def start_battle() :
-    pokemon_ally = loadPokemon(4)
-    pokemon_ally_sprite = pygame.image.load(pokemon_ally.sprite_back)
-    pokemon_ally_sprite = pygame.transform.scale(pokemon_ally_sprite, (600, 600))
 
-    pokemon_ennemy = loadPokemon(1)
+def start_battle() :
+    pokemon_ally = loadPokemon(33)
+    pokemon_ally_sprite = pygame.image.load(pokemon_ally.sprite_back)
+    pokemon_ally_sprite = pygame.transform.scale(pokemon_ally_sprite, (400, 400))
+
+    pokemon_ennemy = loadPokemon(52)
     pokemon_ennemy_sprite = pygame.image.load(pokemon_ennemy.sprite_front)
     pokemon_ennemy_sprite = pygame.transform.scale(pokemon_ennemy_sprite, (350, 350))
 
     display_ui(pokemon_ally, pokemon_ennemy)
 
-    screen.blit(pokemon_ally_sprite, (-15, 350))
-    screen.blit(pokemon_ennemy_sprite,(640, 250))
+    screen.blit(pokemon_ally_sprite, (150, 300))
+    screen.blit(pokemon_ennemy_sprite,(600, 140))
     
+    health_bar_ally.hp = 100
+    health_bar_ennemy.hp = 100
+
     battle = True
     while battle :
         for event in pygame.event.get() :

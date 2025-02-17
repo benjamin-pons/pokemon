@@ -1,3 +1,5 @@
+import pygame
+
 class HealthBar():
     def __init__(self, x, y, w, h, max_hp):
         self.x = x
