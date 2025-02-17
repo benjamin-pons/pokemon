@@ -4,6 +4,8 @@ import battle
 
 pygame.init()
 
+clock = pygame.time.Clock()
+
 SCREEN_WIDTH = 1100
 SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -75,6 +77,8 @@ current_screen = "menu"
 
 running = True
 while running:
+    clock.tick(60)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
