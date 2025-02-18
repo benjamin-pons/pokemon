@@ -44,6 +44,8 @@ class Battle:
         self.health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
         self.health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
+        self.pokedex_obj = pokedex.Pokédex()
+
     def display_battle(self, pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
         self.screen.blit(self.button_run, self.rect_button_run)
         self.screen.blit(self.button_attack, self.rect_button_attack)
@@ -92,6 +94,10 @@ class Battle:
         self.display_ui(ally, target)
         self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
 
+    def catch_pokemon(self, pokemon) :
+        self.pokedex_obj.add_pokemon_in_pokedex(pokemon)
+
+    
     def start_battle(self):
         self.pokemon_ally = self.loadPokemon(33)
         self.pokemon_ally_sprite = pygame.image.load(self.pokemon_ally.sprite_back)
@@ -123,8 +129,8 @@ class Battle:
                         battle = False
                     if self.health_bar_ennemy.hp == 0:
                         print("win")
-                        pokedex.add_pokemon_in_pokedex(self.pokemon_ennemy.name)
-                        exit()
+                        self.catch_pokemon(self.pokemon_ennemy)
+                        battle = False
                     elif self.rect_button_run.collidepoint(event.pos):
                         battle = False
 

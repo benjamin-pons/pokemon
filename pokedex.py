@@ -29,15 +29,15 @@ class Pokédex :
         """Sauvegarde la liste des Pokémon gagnés dans le fichier JSON."""
         with open("pokedex.json", "w", encoding="utf-8") as f:
             json.dump(pokedex, f, indent=4)
-
+    
     def add_pokemon_in_pokedex(self, pokemon):
         """Ajoute un Pokémon gagné au Pokédex et sauvegarde."""
-        self.pokedex = load_pokedex()
+        self.pokedex = self.load_pokedex()
         pokemon_sprite = pygame.image.load(pokemon.sprite_front)
         pokemon_sprite = pygame.transform.scale(pokemon_sprite, (100, 100))
-        if pokemon not in self.pokedex: 
-            self.pokedex.append(pokemon)
-            save_pokedex(self.pokedex)
+        if pokemon.name not in self.pokedex: 
+            self.pokedex.append(pokemon.name)
+            self.save_pokedex(self.pokedex)
 
     def display_pokedex(self):
         
