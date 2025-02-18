@@ -1,5 +1,6 @@
 import pygame
 import battle
+import pokedex
 from battle import Battle
 
 pygame.init()
@@ -14,8 +15,7 @@ pygame.display.set_caption("Pokemon")
 background_image = pygame.image.load(r"./assets/images/background/background_display_menu.png")
 background_image = pygame.transform.scale(background_image, (1100, 800))
 
-background_pokedex = pygame.image.load(r"./assets/images/background/background_pokedex.jpg")
-background_pokedex = pygame.transform.scale(background_pokedex, (1100, 800))
+
 
 background_game = pygame.image.load(r"./assets/images/background/background_game.jpg")
 background_game = pygame.transform.scale(background_game, (1100, 800))
@@ -63,10 +63,7 @@ def display_main_menu():
     screen.blit(button_pokedex, rect_button_pokedex.topleft)
     pygame.display.update()
 
-def display_pokedex():
-    screen.blit(background_pokedex,(0,0))
-    screen.blit(button_back,rect_button_back)
-    pygame.display.update()
+
 
 def display_save():
     screen.blit(background_save, (0, 0))
@@ -91,6 +88,9 @@ while running:
                     current_screen = "menu"
                 if rect_button_pokedex.collidepoint(event.pos):
                     current_screen = "pokedex"
+                    pokedex_obj = pokedex.Pokédex()
+                    pokedex_obj.display_pokedex()
+                    current_screen = "menu"
                 if rect_button_quit.collidepoint(event.pos):
                     running = False
                 if rect_button_save.collidepoint(event.pos):
@@ -104,8 +104,6 @@ while running:
             pygame.mixer.music.load(r"./assets/sound/sound_theme.mp3")
             pygame.mixer.music.play(-1)
         display_main_menu()
-    elif current_screen == "pokedex":
-        display_pokedex()
     elif current_screen == "save":
         display_save()
 

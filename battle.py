@@ -3,6 +3,7 @@ from pokemon import Pokemon
 import json
 import random
 import time
+import pokedex
 from healthbar import HealthBar
 
 class Battle:
@@ -116,6 +117,14 @@ class Battle:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.rect_button_attack.collidepoint(event.pos):
                         self.action_attack(self.pokemon_ally, self.pokemon_ennemy)
+                    if self.health_bar_ally.hp == 0:
+                        print("loose")
+                        time.sleep(200)
+                        battle = False
+                    if self.health_bar_ennemy.hp == 0:
+                        print("win")
+                        pokedex.add_pokemon_in_pokedex(self.pokemon_ennemy.name)
+                        exit()
                     elif self.rect_button_run.collidepoint(event.pos):
                         battle = False
 
