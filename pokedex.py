@@ -18,7 +18,7 @@ class Pokédex :
         return sprite
 
     def load_pokedex(self):
-        """Charge la liste des Pokémon gagnés depuis le fichier JSON."""
+        """Loads caught Pokemon list from json file"""
         try:
             with open("pokedex.json", "r", encoding="utf-8") as f:
                 return json.load(f)
@@ -26,12 +26,12 @@ class Pokédex :
             return []  
 
     def save_pokedex(self, pokedex):
-        """Sauvegarde la liste des Pokémon gagnés dans le fichier JSON."""
+        """Saves caught Pokemon list from json file"""
         with open("pokedex.json", "w", encoding="utf-8") as f:
             json.dump(pokedex, f, indent=4)
     
     def add_pokemon_in_pokedex(self, pokemon):
-        """Ajoute un Pokémon gagné au Pokédex et sauvegarde."""
+        """Adds pokemon to caught list"""
         self.pokedex = self.load_pokedex()
         pokemon_sprite = pygame.image.load(pokemon.sprite_front)
         pokemon_sprite = pygame.transform.scale(pokemon_sprite, (100, 100))
@@ -40,8 +40,7 @@ class Pokédex :
             self.save_pokedex(self.pokedex)
 
     def display_pokedex(self):
-        
-        """Affiche le Pokédex avec les Pokémon gagnés."""
+        """Display caught pokemon list"""
         background_pokedex = pygame.image.load(r"./assets/images/background/background_pokedex.jpg")
         background_pokedex = pygame.transform.scale(background_pokedex, (1100, 800))
         button_back = pygame.image.load(r"./assets/images/buttons/button_back.png")
@@ -50,10 +49,7 @@ class Pokédex :
         self.screen.blit(background_pokedex,(0,0))
         pokedex_list = self.load_pokedex()
         for i, pokemon_name in enumerate(pokedex_list):
-            if i <= 5 :
-                self.screen.blit(self.get_pokemon_sprite(pokemon_name), (50, 50 + i * 130))
-            elif i <= 10 :
-                self.screen.blit(self.get_pokemon_sprite(pokemon_name), (50, 50 + (i-5) * 130))
+            self.screen.blit(self.get_pokemon_sprite(pokemon_name), (50, 50 + i * 130))
         in_pokedex = True
         while in_pokedex :
             for event in pygame.event.get():

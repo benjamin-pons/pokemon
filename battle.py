@@ -99,11 +99,13 @@ class Battle:
 
     
     def start_battle(self):
-        self.pokemon_ally = self.loadPokemon(33)
+        random_ally = random.randint(0, 61)
+        self.pokemon_ally = self.loadPokemon(random_ally)
         self.pokemon_ally_sprite = pygame.image.load(self.pokemon_ally.sprite_back)
         self.pokemon_ally_sprite = pygame.transform.scale(self.pokemon_ally_sprite, (400, 400))
 
-        self.pokemon_ennemy = self.loadPokemon(52)
+        random_ennemy = random.randint(0, 61)
+        self.pokemon_ennemy = self.loadPokemon(random_ennemy)
         self.pokemon_ennemy_sprite = pygame.image.load(self.pokemon_ennemy.sprite_front)
         self.pokemon_ennemy_sprite = pygame.transform.scale(self.pokemon_ennemy_sprite, (350, 350))
 
