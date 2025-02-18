@@ -86,13 +86,31 @@ class Battle:
 
     # Attack
     def action_attack(self, ally, target):
-        target.print_info()
+        # Your pokemon attacks
         ally.attack(target)
+
         self.health_bar_ennemy.hp = (target.get_hp() / target.max_hp) * 100
-        time.sleep(1)
-        target.print_info()
+        if target.get_hp() == 0: # Victory
+            self.catch_pokemon(target)
+            self.battle = False
+            return
+
         self.display_ui(ally, target)
         self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
+        time.sleep(1)
+
+        # Ennemy attacks
+        target.attack(ally)
+        self.health_bar_ally.hp = (ally.get_hp() / ally.max_hp) * 100
+        if ally.get_hp() == 0 : # Defeat
+            self.battle = False
+            return
+        
+        self.display_ui(ally, target)
+        self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
+        time.sleep(1)
+
+
 
     def catch_pokemon(self, pokemon) :
         self.pokedex_obj.add_pokemon_in_pokedex(pokemon)
@@ -117,24 +135,16 @@ class Battle:
         self.health_bar_ally.hp = 100
         self.health_bar_ennemy.hp = 100
 
-        battle = True
-        while battle:
+        self.battle = True
+        while self.battle:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    battle = False
+                    self.battle = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.rect_button_attack.collidepoint(event.pos):
                         self.action_attack(self.pokemon_ally, self.pokemon_ennemy)
-                    if self.health_bar_ally.hp == 0:
-                        print("loose")
-                        time.sleep(200)
-                        battle = False
-                    if self.health_bar_ennemy.hp == 0:
-                        print("win")
-                        self.catch_pokemon(self.pokemon_ennemy)
-                        battle = False
                     elif self.rect_button_run.collidepoint(event.pos):
-                        battle = False
+                        self.battle = False
 
             self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, self.pokemon_ally, self.pokemon_ennemy)
 
