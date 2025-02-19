@@ -44,8 +44,6 @@ class Battle:
         self.health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
         self.health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
-        self.pokedex_obj = pokedex.Pokédex()
-
     def display_battle(self, pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
         self.screen.blit(self.button_run, self.rect_button_run)
         self.screen.blit(self.button_attack, self.rect_button_attack)
@@ -113,7 +111,9 @@ class Battle:
 
 
     def catch_pokemon(self, pokemon) :
-        self.pokedex_obj.add_pokemon_in_pokedex(pokemon)
+        pokemon.hp = pokemon.set_hp(pokemon.max_hp) # Heal pokemon after being caught
+        pokedex_obj = pokedex.Pokédex()
+        pokedex_obj.save_pokemon_to_json(pokemon)
 
     
     def start_battle(self):

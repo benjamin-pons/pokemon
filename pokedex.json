@@ -1,3 +1,13 @@
 [
-    "Zekrom"
+    {
+        "name": "Azurill",
+        "level": 50,
+        "hp": 110,
+        "max_hp": 110,
+        "attack": 20,
+        "defense": 40,
+        "type1": "Water",
+        "type2": "Fairy",
+        "alive": false
+    }
 ]

@@ -23,6 +23,9 @@ class Pokemon :
     def get_hp(self) :
         return self.__hp
     
+    def set_hp(self, hp) :
+        self.__hp = hp
+    
     def get_type(self) :
         return (self.type1, self.type2)
     

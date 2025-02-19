@@ -35,9 +35,37 @@ class Pokédex :
         self.pokedex = self.load_pokedex()
         pokemon_sprite = pygame.image.load(pokemon.sprite_front)
         pokemon_sprite = pygame.transform.scale(pokemon_sprite, (100, 100))
-        if pokemon.name not in self.pokedex: 
+        if pokemon.name not in self.pokedex[name]:
             self.pokedex.append(pokemon.name)
             self.save_pokedex(self.pokedex)
+
+    def save_pokemon_to_json(self, pokemon):
+        """Loads pokedex.json file then saves pokemon inside"""
+        try:
+            with open("pokedex.json", "r") as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = []
+        for p in data :
+            if p["name"] == pokemon.name :
+                return
+        pokemon_data = {
+            "name": pokemon.name,
+            "level": pokemon.lvl,
+            "hp": pokemon.get_hp(),
+            "max_hp": pokemon.max_hp,
+            "attack": pokemon.atk,
+            "defense": pokemon.defense,
+            "type1": pokemon.type1,
+            "type2": pokemon.type2,
+            "alive": pokemon.alive
+        }
+        
+        data.append(pokemon_data)
+        
+        with open("pokedex.json", "w") as file:
+            json.dump(data, file, indent=4)
+
 
     def display_pokedex(self):
         """Display caught pokemon list"""
@@ -49,7 +77,7 @@ class Pokédex :
         self.screen.blit(background_pokedex,(0,0))
         pokedex_list = self.load_pokedex()
         for i, pokemon_name in enumerate(pokedex_list):
-            self.screen.blit(self.get_pokemon_sprite(pokemon_name), (50, 50 + i * 130))
+            self.screen.blit(self.get_pokemon_sprite(pokemon_name["name"]), (50, 50 + i * 130))
         in_pokedex = True
         while in_pokedex :
             for event in pygame.event.get():
