@@ -1,6 +1,7 @@
 import pygame
 import battle
 import pokedex
+import save
 from battle import Battle
 
 pygame.init()
@@ -64,12 +65,6 @@ def display_main_menu():
     pygame.display.update()
 
 
-
-def display_save():
-    screen.blit(background_save, (0, 0))
-    screen.blit(button_back,rect_button_back)
-    pygame.display.update()
-
 current_screen = "menu"
 
 running = True
@@ -95,6 +90,8 @@ while running:
                     running = False
                 if rect_button_save.collidepoint(event.pos):
                     current_screen = "save"
+                    save_obj = save.Save()
+                    save_obj.display_save()
             elif current_screen in ["game", "pokedex", "save"]:
                 if rect_button_back.collidepoint(event.pos):
                     current_screen = "menu"
@@ -104,7 +101,5 @@ while running:
             pygame.mixer.music.load(r"./assets/sound/sound_theme.mp3")
             pygame.mixer.music.play(-1)
         display_main_menu()
-    elif current_screen == "save":
-        display_save()
 
 pygame.quit()
