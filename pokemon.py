@@ -1,5 +1,5 @@
 class Pokemon :
-    def __init__(self, name, base_hp, atk, defense, lvl, type1, type2 = "Single") :
+    def __init__(self, name, base_hp, atk, defense, lvl, type1, type2 = "Single", hp = None) :
         self.name = name
         self.atk = atk
         self.defense = defense
@@ -7,7 +7,7 @@ class Pokemon :
         self.type2 = type2
         self.lvl = lvl
         self.max_hp = (2*base_hp*self.lvl)//100 + self.lvl + 10
-        self.__hp = self.max_hp
+        self.__hp = hp if hp is not None else self.max_hp # Is at max hp by default
         self.sprite_front = f"./assets/images/sprites/front/{self.name.lower()}_front.png"
         self.sprite_back = f"./assets/images/sprites/back/{self.name.lower()}_back.png"
         self.alive = True

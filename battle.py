@@ -4,7 +4,9 @@ import json
 import random
 import time
 import pokedex
+import selectPokemon
 from healthbar import HealthBar
+import textbox
 
 class Battle:
     def __init__(self):
@@ -44,6 +46,8 @@ class Battle:
         self.health_bar_ennemy = HealthBar(200, 155, 213, 15, 100)
         self.health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
+        self.textbox = textbox.TextBox(self.screen, 600, 120)
+
     def display_battle(self, pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
         self.screen.blit(self.button_run, self.rect_button_run)
         self.screen.blit(self.button_attack, self.rect_button_attack)
@@ -71,13 +75,20 @@ class Battle:
         self.screen.blit(text_lvl_ennemy, (350, 125))
 
     # Input pokedex index to load corresponding pokemon
-    def loadPokemon(self, number):
+    def loadAllyPokemon(self, pokemon_name):
         """Create a pokemon from json file"""
+        with open("pokedex.json", "r") as file:
+            pokedex = json.load(file)
+        for pokemon in pokedex:
+            if pokemon["name"].lower() == pokemon_name.lower():
+                return Pokemon(pokemon["name"], pokemon["max_hp"], pokemon["attack"], pokemon["defense"], pokemon["level"], pokemon["type1"], pokemon["type2"], pokemon["hp"])
+    
+    def loadEnnemyPokemon(self, number) :
         name = self.pokemonList[number]["name"]
         base_hp = self.pokemonList[number]["hp"]
         atk = self.pokemonList[number]["attack"]
         defense = self.pokemonList[number]["defense"]
-        lvl = random.randint(50, 60)
+        lvl = random.randint(self.pokemon_ally.lvl - 3, self.pokemon_ally.lvl + 3)
         type1 = self.pokemonList[number]["type1"]
         type2 = self.pokemonList[number]["type2"]
         return Pokemon(name, base_hp, atk, defense, lvl, type1, type2)
@@ -88,27 +99,46 @@ class Battle:
         ally.attack(target)
 
         self.health_bar_ennemy.hp = (target.get_hp() / target.max_hp) * 100
-        if target.get_hp() == 0: # Victory
-            self.catch_pokemon(target)
-            self.battle = False
-            return
+        
 
         self.display_ui(ally, target)
         self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
+
         time.sleep(1)
+
+        if target.get_hp() == 0: # Victory
+            self.battle = False
+            self.textbox.add_text(f"{target.name} est K.O, victoire")
+            self.textbox.draw()
+            pygame.display.flip()
+            time.sleep(2)
+            self.textbox.add_text(f"{target.name} est ajoute au Pokedex")
+            self.textbox.draw()
+            pygame.display.flip()
+            time.sleep(2)
+            self.catch_pokemon(target)
+
+            return
+
+        
 
         # Ennemy attacks
         target.attack(ally)
         self.health_bar_ally.hp = (ally.get_hp() / ally.max_hp) * 100
-        if ally.get_hp() == 0 : # Defeat
-            self.battle = False
-            return
+        
         
         self.display_ui(ally, target)
         self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
+        
         time.sleep(1)
 
-
+        if ally.get_hp() == 0 : # Defeat
+            self.battle = False
+            self.textbox.add_text(f"{ally.name} est K.O, defaite")
+            self.textbox.draw()
+            pygame.display.flip()
+            time.sleep(2)
+            return
 
     def catch_pokemon(self, pokemon) :
         pokemon.hp = pokemon.set_hp(pokemon.max_hp) # Heal pokemon after being caught
@@ -117,13 +147,14 @@ class Battle:
 
     
     def start_battle(self):
-        random_ally = random.randint(0, 61)
-        self.pokemon_ally = self.loadPokemon(random_ally)
+        select_obj = selectPokemon.SelectPokemon()
+
+        self.pokemon_ally = self.loadAllyPokemon(select_obj.open_menu())
         self.pokemon_ally_sprite = pygame.image.load(self.pokemon_ally.sprite_back)
         self.pokemon_ally_sprite = pygame.transform.scale(self.pokemon_ally_sprite, (400, 400))
 
-        random_ennemy = random.randint(0, 61)
-        self.pokemon_ennemy = self.loadPokemon(random_ennemy)
+        random_ennemy = random.randint(1, 61)
+        self.pokemon_ennemy = self.loadEnnemyPokemon(random_ennemy)
         self.pokemon_ennemy_sprite = pygame.image.load(self.pokemon_ennemy.sprite_front)
         self.pokemon_ennemy_sprite = pygame.transform.scale(self.pokemon_ennemy_sprite, (350, 350))
 
@@ -145,6 +176,7 @@ class Battle:
                         self.action_attack(self.pokemon_ally, self.pokemon_ennemy)
                     elif self.rect_button_run.collidepoint(event.pos):
                         self.battle = False
+
 
             self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, self.pokemon_ally, self.pokemon_ennemy)
 
