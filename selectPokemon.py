@@ -22,12 +22,13 @@ class SelectPokemon :
         self.available_pokemon = [pokemon["name"].lower() for pokemon in self.pokedex]
 
     def load_sprites(self):
+        """Loads all sprites from pokedex file"""
         sprites = []
-        for pokemon in self.pokedex:  # Parcourir les Pokémon dans le pokedex
+        for pokemon in self.pokedex:
             sprite_path = f"./assets/images/sprites/front/{pokemon['name'].lower()}_front.png"
             sprite = pygame.image.load(sprite_path)
             sprite = pygame.transform.scale(sprite, (self.SPRITE_SIZE, self.SPRITE_SIZE))
-            sprites.append((sprite, sprite_path, pokemon['name']))  # Ajouter le nom du Pokémon
+            sprites.append((sprite, sprite_path, pokemon['name']))  # Adds pokemon name
         return sprites
 
     def draw_sprites(self):

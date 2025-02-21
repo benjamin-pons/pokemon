@@ -75,7 +75,6 @@ class Battle:
         self.screen.blit(text_name_ennemy, (150, 125))
         self.screen.blit(text_lvl_ennemy, (350, 125))
 
-    # Input pokedex index to load corresponding pokemon
     def loadAllyPokemon(self, pokemon_name):
         """Create a pokemon from json file"""
         with open("pokedex.json", "r") as file:
@@ -96,6 +95,7 @@ class Battle:
 
     # Attack
     def action_attack(self, ally, target):
+        """Plays a turn of the battle, your pokemon attacks first"""
         # Your pokemon attacks
         ally.attack(target)
         self.health_bar_ennemy.hp = (target.get_hp() / target.max_hp) * 100
