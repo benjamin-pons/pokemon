@@ -47,6 +47,7 @@ class Battle:
         self.health_bar_ally = HealthBar(750, 610, 213, 15, 100)
 
         self.textbox = textbox.TextBox(self.screen, 600, 120)
+        self.pokedex_obj = pokedex.Pokédex()
 
     def display_battle(self, pokemon_ally_sprite, pokemon_ennemy_sprite, ally, ennemy):
         self.screen.blit(self.button_run, self.rect_button_run)
@@ -81,7 +82,7 @@ class Battle:
             pokedex = json.load(file)
         for pokemon in pokedex:
             if pokemon["name"].lower() == pokemon_name.lower():
-                return Pokemon(pokemon["name"], pokemon["max_hp"], pokemon["attack"], pokemon["defense"], pokemon["level"], pokemon["type1"], pokemon["type2"], pokemon["hp"])
+                return Pokemon(pokemon["name"], pokemon["max_hp"], pokemon["attack"], pokemon["defense"], pokemon["level"], pokemon["type1"], pokemon["type2"])
     
     def loadEnnemyPokemon(self, number) :
         name = self.pokemonList[number]["name"]
@@ -97,7 +98,6 @@ class Battle:
     def action_attack(self, ally, target):
         # Your pokemon attacks
         ally.attack(target)
-
         self.health_bar_ennemy.hp = (target.get_hp() / target.max_hp) * 100
         
 
@@ -105,18 +105,29 @@ class Battle:
         self.display_battle(self.pokemon_ally_sprite, self.pokemon_ennemy_sprite, ally, target)
 
         time.sleep(1)
-
         if target.get_hp() == 0: # Victory
             self.battle = False
             self.textbox.add_text(f"{target.name} est K.O, victoire")
             self.textbox.draw()
             pygame.display.flip()
+
             time.sleep(2)
+
             self.textbox.add_text(f"{target.name} est ajoute au Pokedex")
             self.textbox.draw()
             pygame.display.flip()
-            time.sleep(2)
             self.catch_pokemon(target)
+
+            time.sleep(2)
+
+            ally.lvl += 2
+
+            self.textbox.add_text(f"{ally.name} passe au niveau {ally.lvl}")
+            self.textbox.draw()
+            pygame.display.flip()
+
+            time.sleep(2)
+            self.pokedex_obj.save_pokemon_to_json(ally)
 
             return
 
@@ -142,8 +153,8 @@ class Battle:
 
     def catch_pokemon(self, pokemon) :
         pokemon.hp = pokemon.set_hp(pokemon.max_hp) # Heal pokemon after being caught
-        pokedex_obj = pokedex.Pokédex()
-        pokedex_obj.save_pokemon_to_json(pokemon)
+        
+        self.pokedex_obj.save_pokemon_to_json(pokemon)
 
     
     def start_battle(self):

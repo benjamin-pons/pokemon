@@ -12,14 +12,6 @@ class Pokemon :
         self.sprite_back = f"./assets/images/sprites/back/{self.name.lower()}_back.png"
         self.alive = True
     
-    def lower_hp(self, damage) :
-        """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
-        if damage >= self.__hp :
-            self.__hp = 0
-            self.alive = False
-        else :
-            self.__hp -= damage
-    
     def get_hp(self) :
         return self.__hp
     
@@ -43,12 +35,19 @@ class Pokemon :
         efficiency = type_matchups[type1_def][type_atk] * type_matchups[type2_def][type_atk]
         return efficiency
     
-    def attack(self, target) :
-        base = (2*self.lvl +2)*(self.atk/target.get_def() * 20)
+    def attack(self, target):
+        base = (2 * self.lvl + 2) * (self.atk / target.get_def()) * 20
         efficiency = self.get_effectiveness(target)
-        damage = (base//50 + 2) * efficiency
+        damage = max(1, int((base / 50 + 2) * efficiency))  # Forcer un minimum de 1 dégât
         target.lower_hp(damage)
         print(f"{target.name} took {damage} damage")
+        print(f"{target.name} has {target.get_hp()} HP")
+
+    def lower_hp(self, damage):
+        """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
+        self.__hp = max(0, self.__hp - damage)
+        if self.__hp == 0:
+            self.alive = False
     
     def print_hp(self) :
         print(f"{self.name} : {self.get_hp()} HP")
@@ -60,6 +59,7 @@ class Pokemon :
         else :
             print(f"Type : {self.type1}")
         print(f"ATK : {self.atk} \nDEF : {self.defense} \nHP : {self.__hp}")
+    
 
     
 # Source : https://github.com/AbnormalNormality/Pokemon-Type-Matchups/blob/main/original%20function.py

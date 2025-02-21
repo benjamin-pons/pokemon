@@ -34,46 +34,63 @@ class Pokédex :
         except (FileNotFoundError, json.JSONDecodeError):
             return []
 
-    def save_pokedex(self, pokedex):
-        """Saves caught Pokemon list from json file"""
+    def reset(self):
+        """Reset the pokemons in pokedex"""
+        with open("pokedex_starter.json", "r") as s :
+            starters = json.load(s)
         with open("pokedex.json", "w", encoding="utf-8") as f:
-            json.dump(pokedex, f, indent=4)
+            json.dump(starters, f, indent=4)
     
 
-    def save_pokemon_to_json(self, pokemon):
-        """Loads pokedex.json file then saves pokemon inside"""
+    def save_pokemon_to_json(self, pokemon) :
+        """Loads pokedex.json file then saves or updates pokemon inside"""
         try:
             with open("pokedex.json", "r") as file:
                 data = json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
             data = []
-        for p in data :
-            if p["name"] == pokemon.name :
-                return
-        pokemon_data = {
-            "name": pokemon.name,
-            "level": pokemon.lvl,
-            "hp": pokemon.get_hp(),
-            "max_hp": pokemon.max_hp,
-            "attack": pokemon.atk,
-            "defense": pokemon.defense,
-            "type1": pokemon.type1,
-            "type2": pokemon.type2,
-            "alive": pokemon.alive
-        }
-        
-        data.append(pokemon_data)
-        
+
+        # Check if pokemon is already in pokedex
+        pokemon_found = False
+        for p in data:
+            if p["name"] == pokemon.name:
+                # Updates info
+                p["level"] = pokemon.lvl
+                p["hp"] = pokemon.get_hp()
+                p["max_hp"] = pokemon.max_hp
+                p["attack"] = pokemon.atk
+                p["defense"] = pokemon.defense
+                p["type1"] = pokemon.type1
+                p["type2"] = pokemon.type2
+                p["alive"] = pokemon.alive
+                pokemon_found = True
+                break
+
+        # If pokemon isn't in pokedex
+        if not pokemon_found:
+            pokemon_data = {
+                "name": pokemon.name,
+                "level": pokemon.lvl,
+                "hp": pokemon.get_hp(),
+                "max_hp": pokemon.max_hp,
+                "attack": pokemon.atk,
+                "defense": pokemon.defense,
+                "type1": pokemon.type1,
+                "type2": pokemon.type2,
+                "alive": pokemon.alive
+            }
+            data.append(pokemon_data)
+
         with open("pokedex.json", "w") as file:
             json.dump(data, file, indent=4)
 
     def load_sprites(self, pokedex_list):
         sprites = []
-        for pokemon in pokedex_list:  # Parcourir les Pokémon dans le pokedex
+        for pokemon in pokedex_list:  # Go though the pokedex
             sprite_path = f"./assets/images/sprites/front/{pokemon['name'].lower()}_front.png"
             sprite = pygame.image.load(sprite_path)
             sprite = pygame.transform.scale(sprite, (self.SPRITE_SIZE, self.SPRITE_SIZE))
-            sprites.append((sprite, sprite_path, pokemon['name']))  # Ajouter le nom du Pokémon
+            sprites.append((sprite, sprite_path, pokemon['name']))  # Add pokemon name
         return sprites
 
     def draw_sprites(self, sprites):
