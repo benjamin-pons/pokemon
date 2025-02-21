@@ -1,5 +1,5 @@
 class Pokemon :
-    def __init__(self, name, base_hp, atk, defense, lvl, type1, type2 = "Single") :
+    def __init__(self, name, base_hp, atk, defense, lvl, type1, type2 = "Single", hp = None) :
         self.name = name
         self.atk = atk
         self.defense = defense
@@ -7,21 +7,16 @@ class Pokemon :
         self.type2 = type2
         self.lvl = lvl
         self.max_hp = (2*base_hp*self.lvl)//100 + self.lvl + 10
-        self.__hp = self.max_hp
+        self.__hp = hp if hp is not None else self.max_hp # Is at max hp by default
         self.sprite_front = f"./assets/images/sprites/front/{self.name.lower()}_front.png"
         self.sprite_back = f"./assets/images/sprites/back/{self.name.lower()}_back.png"
         self.alive = True
     
-    def lower_hp(self, damage) :
-        """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
-        if damage >= self.__hp :
-            self.__hp = 0
-            self.alive = False
-        else :
-            self.__hp -= damage
-    
     def get_hp(self) :
         return self.__hp
+    
+    def set_hp(self, hp) :
+        self.__hp = hp
     
     def get_type(self) :
         return (self.type1, self.type2)
@@ -40,12 +35,19 @@ class Pokemon :
         efficiency = type_matchups[type1_def][type_atk] * type_matchups[type2_def][type_atk]
         return efficiency
     
-    def attack(self, target) :
-        base = (2*self.lvl +2)*(self.atk/target.get_def() * 20)
+    def attack(self, target):
+        base = (2 * self.lvl + 2) * (self.atk / target.get_def()) * 20
         efficiency = self.get_effectiveness(target)
-        damage = (base//50 + 2) * efficiency
+        damage = max(1, int((base / 50 + 2) * efficiency))  # Forcer un minimum de 1 dégât
         target.lower_hp(damage)
         print(f"{target.name} took {damage} damage")
+        print(f"{target.name} has {target.get_hp()} HP")
+
+    def lower_hp(self, damage):
+        """Inflicts damage to the pokemon, if hp reaches 0 KO's the pokemon"""
+        self.__hp = max(0, self.__hp - damage)
+        if self.__hp == 0:
+            self.alive = False
     
     def print_hp(self) :
         print(f"{self.name} : {self.get_hp()} HP")
@@ -57,6 +59,7 @@ class Pokemon :
         else :
             print(f"Type : {self.type1}")
         print(f"ATK : {self.atk} \nDEF : {self.defense} \nHP : {self.__hp}")
+    
 
     
 # Source : https://github.com/AbnormalNormality/Pokemon-Type-Matchups/blob/main/original%20function.py

@@ -42,9 +42,9 @@ button_pokedex = pygame.image.load(r"./assets/images/buttons/button_pokedex.png"
 button_pokedex = pygame.transform.scale(button_pokedex, BUTTON_SIZE)
 rect_button_pokedex = button_pokedex.get_rect(topleft=(700, 300))
 
-button_save = pygame.image.load(r"./assets/images/buttons/save_button.png")
-button_save = pygame.transform.scale(button_save, BUTTON_SIZE)
-rect_button_save = button_save.get_rect(topleft=(200, 600))
+button_reset = pygame.image.load(r"./assets/images/buttons/reset_button.png")
+button_reset = pygame.transform.scale(button_reset, BUTTON_SIZE)
+rect_button_reset = button_reset.get_rect(topleft=(200, 600))
 
 button_quit = pygame.image.load(r"./assets/images/buttons/button_quit.png")
 button_quit = pygame.transform.scale(button_quit, BUTTON_SIZE)
@@ -59,7 +59,7 @@ def display_main_menu():
     screen.blit(logo,(350,80))
     screen.blit(button_play, rect_button_play.topleft)
     screen.blit(button_quit, rect_button_quit.topleft)
-    screen.blit(button_save,rect_button_save)
+    screen.blit(button_reset,rect_button_reset)
     screen.blit(button_pokedex, rect_button_pokedex.topleft)
     pygame.display.update()
 
@@ -71,6 +71,8 @@ def display_save():
     pygame.display.update()
 
 current_screen = "menu"
+
+pokedex_obj = pokedex.Pokédex()
 
 running = True
 while running:
@@ -88,13 +90,13 @@ while running:
                     current_screen = "menu"
                 if rect_button_pokedex.collidepoint(event.pos):
                     current_screen = "pokedex"
-                    pokedex_obj = pokedex.Pokédex()
+                    
                     pokedex_obj.display_pokedex()
                     current_screen = "menu"
                 if rect_button_quit.collidepoint(event.pos):
                     running = False
-                if rect_button_save.collidepoint(event.pos):
-                    current_screen = "save"
+                if rect_button_reset.collidepoint(event.pos):
+                    pokedex_obj.reset()
             elif current_screen in ["game", "pokedex", "save"]:
                 if rect_button_back.collidepoint(event.pos):
                     current_screen = "menu"
